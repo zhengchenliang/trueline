@@ -536,7 +536,7 @@ if [[ "${#TRUELINE_SEGMENTS[@]}" -eq 0 ]]; then
         'read_only,col_orange,col_black,normal'
         'bg_jobs,col_pink,col_black,normal'
         'exit_status,col_red,col_black,normal'
-        'newline,col_pink,col_black,dim'
+        'newline,col_pink,col_black,normal'
         # 'cmd_duration,black,grey,normal'
     )
 fi
