@@ -485,18 +485,34 @@ _trueline_prompt_command() {
 #---------------+
 # Configuration |
 #---------------+
-declare -A TRUELINE_COLORS_DEFAULT=(
-    [black]='36;39;46'        #24272e
-    [cursor_grey]='40;44;52'  #282c34
-    [green]='152;195;121'     #98c379
-    [grey]='171;178;191'      #abb2bf
-    [light_blue]='97;175;239' #61afef
-    [mono]='130;137;151'      #828997
-    [orange]='209;154;102'    #d19a66
-    [purple]='198;120;221'    #c678dd
-    [red]='224;108;117'       #e06c75
-    [special_grey]='59;64;72' #3b4048
-    [white]='208;208;208'     #d0d0d0
+
+# VITAL Colors
+declare -A TRUELINE_COLORS_DEFAULT=( # https://www.fontke.com/tool/rgb/ffffff/
+    [col_black]='0;0;0'         #000000
+    [col_pink]='255;0;255'      #FF00FF
+    [col_red]='255;0;0'         #FF0000
+    [col_orange]='255;204;0'    #FFCC00
+    [col_yellow]='255;255;0'    #FFFF00
+    [col_lightgreen]='0;255;0'  #00FF00
+    [col_darkgreen]='0;102;0'   #006600
+    [col_cyan]='0;255;255'      #00FFFF
+    [col_blue]='0;0;255'        #0000FF
+    [col_purple]='102;0;204'    #6600CC
+    [col_gray1]='51;51;51'      #333333
+    [col_gray2]='102;102;102'   #666666
+    [col_gray3]='153;153;153'   #999999
+    [col_gray4]='204;204;204'   #CCCCCC
+    [col_white]='255;255;255'   #FFFFFF
+    [cursor_grey]='40;44;52'    #282c34
+    [green]='152;195;121'       #98c379
+    [grey]='171;178;191'        #abb2bf
+    [light_blue]='97;175;239'   #61afef
+    [mono]='130;137;151'        #828997
+    [orange]='209;154;102'      #d19a66
+    [purple]='198;120;221'      #c678dd
+    [red]='224;108;117'         #e06c75
+    [special_grey]='59;64;72'   #3b4048
+    [white]='208;208;208'       #d0d0d0
 )
 if [[ "${#TRUELINE_COLORS[@]}" -eq 0 ]]; then
     declare -A TRUELINE_COLORS=()
@@ -508,35 +524,37 @@ for i in "${!TRUELINE_COLORS_DEFAULT[@]}"; do
 done
 unset TRUELINE_COLORS_DEFAULT
 
+# VITAL Segments: name, fg, bg, font type (bold, dim, italic, normal, underlined)
 if [[ "${#TRUELINE_SEGMENTS[@]}" -eq 0 ]]; then
     declare -a TRUELINE_SEGMENTS=(
-        'user,black,white,bold'
-        'aws_profile,black,orange,bold'
-        'venv,black,purple,bold'
-        'conda_env,black,purple,bold'
-        'git,grey,special_grey,normal'
-        'working_dir,mono,cursor_grey,normal'
-        'read_only,black,orange,bold'
-        'bg_jobs,black,orange,bold'
-        'exit_status,black,red,bold'
+        'user,col_pink,col_purple,italic'
+        'aws_profile,col_lightgreen,col_darkgreen,normal'
+        'venv,col_pink,col_purple,normal'
+        'conda_env,col_pink,col_purple,normal'
+        'git,col_gray4,col_gray2,normal'
+        'working_dir,col_gray4,col_gray1,normal'
+        'read_only,col_orange,col_black,normal'
+        'bg_jobs,col_pink,col_black,normal'
+        'exit_status,col_red,col_black,normal'
+        'newline,col_pink,col_black,dim'
         # 'cmd_duration,black,grey,normal'
-        # 'newline,black,orange,bold'
     )
 fi
 
+# VITAL Symbols
 declare -A TRUELINE_SYMBOLS_DEFAULT=(
     [aws_profile]=''
-    [bg_jobs]=''
-    [exit_status]=''
+    [bg_jobs]='&' # ''
+    [exit_status]='>'
     [git_ahead]=''
     [git_behind]=''
     [git_bitbucket]=''
     [git_branch]=''
     [git_github]=''
     [git_gitlab]=''
-    [git_modified]=''
-    [newline]='  '
-    [newline_root]='  '
+    [git_modified]='+'
+    [newline]='❯'
+    [newline_root]='❯'
     [ps2]='...'
     [read_only]=''
     [segment_separator]=''
@@ -546,8 +564,8 @@ declare -A TRUELINE_SYMBOLS_DEFAULT=(
     [vimode_cmd]='N'
     [vimode_ins]='I'
     [working_dir_folder]=''
-    [working_dir_home]=''
-    [working_dir_separator]=''
+    [working_dir_home]='root'
+    [working_dir_separator]='/' # ''
 )
 if [[ "${#TRUELINE_SYMBOLS[@]}" -eq 0 ]]; then
     declare -A TRUELINE_SYMBOLS=()
@@ -559,6 +577,7 @@ for i in "${!TRUELINE_SYMBOLS_DEFAULT[@]}"; do
 done
 unset TRUELINE_SYMBOLS_DEFAULT
 
+# VITAL Options
 # Vimode
 if [[ -z "$TRUELINE_SHOW_VIMODE" ]]; then
     TRUELINE_SHOW_VIMODE=false
@@ -581,15 +600,15 @@ if [[ -z "$TRUELINE_GIT_SHOW_STATUS_NUMBERS" ]]; then
     TRUELINE_GIT_SHOW_STATUS_NUMBERS=true
 fi
 if [[ -z "$TRUELINE_GIT_MODIFIED_COLOR" ]]; then
-    TRUELINE_GIT_MODIFIED_COLOR='red'
+    TRUELINE_GIT_MODIFIED_COLOR='col_cyan'
 fi
 if [[ -z "$TRUELINE_GIT_BEHIND_AHEAD_COLOR" ]]; then
-    TRUELINE_GIT_BEHIND_AHEAD_COLOR='purple'
+    TRUELINE_GIT_BEHIND_AHEAD_COLOR='col_orange'
 fi
 
 # User
 if [[ -z "$TRUELINE_USER_ROOT_COLORS" ]]; then
-    TRUELINE_USER_ROOT_COLORS=('black' 'red')
+    TRUELINE_USER_ROOT_COLORS=('col_lightgreen' 'col_darkgreen')
 fi
 if [[ -z "$TRUELINE_USER_SHOW_IP_SSH" ]]; then
     TRUELINE_USER_SHOW_IP_SSH=false
@@ -603,8 +622,7 @@ fi
 
 # Working dir
 if [[ -z "$TRUELINE_WORKING_DIR_SPACE_BETWEEN_PATH_SEPARATOR" ]]; then
-    TRUELINE_WORKING_DIR_SPACE_BETWEEN_PATH_SEPARATOR=true
-
+    TRUELINE_WORKING_DIR_SPACE_BETWEEN_PATH_SEPARATOR=false
 fi
 if [[ -z "$TRUELINE_WORKING_DIR_ABBREVIATE_PARENT_DIRS" ]]; then
     TRUELINE_WORKING_DIR_ABBREVIATE_PARENT_DIRS=false
