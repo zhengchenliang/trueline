@@ -265,7 +265,7 @@ _trueline_working_dir_segment() {
     elif [[ "$path_size" -eq 2 ]]; then
         local path_="${arr[0]:=/}$wd_separator\[\033[1m\]${arr[+1]}"
     else
-        if [[ "$path_size" -gt 3 ]]; then
+      if [[ "$path_size" -gt 7 ]]; then # show absolute dir path up to /root/.../ (#7)
             if [[ "$TRUELINE_WORKING_DIR_ABBREVIATE_PARENT_DIRS" = true ]]; then
                 p=$(echo "$p" | sed -r "s:([^/]{,$TRUELINE_WORKING_DIR_ABBREVIATE_PARENT_DIRS_LENGTH})[^/]*/:\1/:g")
             else
